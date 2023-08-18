@@ -3,15 +3,14 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import { timestampToDate } from './utils.js';
-import { Authenticate }    from './components/Authenticate';
+import { Login }    from './components/Login';
 import { Profile }         from './components/Profile';
+import { timestampToDate } from './utils.js';
 
 function App() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-
     const getAllUsers = async () => {
       try {
         const result = await axios.get('http://localhost:5000/api/users');
@@ -21,7 +20,6 @@ function App() {
         console.log(err);
       }
     };
-
     getAllUsers();
   }, []);
 
@@ -35,15 +33,15 @@ function App() {
               <li key={user.username}>
                 {user.username}
                 <span className="sub-txt">
-                  joined {timestampToDate(user.created_at)}
+                  joined {timestampToDate(user.createdAt)}
                 </span>
               </li>
             ))}
           </ul>
         </div>
         <Routes>
-          <Route path="/" element={<Authenticate setUsers={setUsers} />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/" element={<Login setUsers={setUsers} />} />
+          <Route path="/profile" element={<Profile setUsers={setUsers} />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

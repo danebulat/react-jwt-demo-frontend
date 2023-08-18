@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth }     from "../contexts/AuthContext";
 
-export function Authenticate({ setUsers }) {
+export function Login({ setUsers }) {
 
   const [username, setUsername] = useState("dane");
   const [password, setPassword] = useState("pass123");
@@ -23,9 +23,6 @@ export function Authenticate({ setUsers }) {
     e.preventDefault();
     const success = await login(username, password);
 
-    setUsername("");
-    setPassword("");
-
     if (success) {
       navigate('/profile');
     }
@@ -33,8 +30,10 @@ export function Authenticate({ setUsers }) {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+
     const user = await register(username, password); 
-    // TODO: Add user to users list
+    setUsers(prev => [...prev, user]);
+    navigate('/profile');
   };
 
   return (

@@ -74,6 +74,7 @@ export function AuthProvider({ children }) {
 
   async function register(username, password) {
     try {
+      console.log(`${username} ${password}`);
       const res = await axios.post('http://localhost:5000/api/register', {
         username, password
       });
@@ -130,7 +131,6 @@ export function AuthProvider({ children }) {
       
       setCurrentUser(null);
       localStorage.removeItem('currentUser');
-      navigate('/');
     }
     catch (err) {
       setError(true);

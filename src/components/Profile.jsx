@@ -4,7 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 import jwt_decode from 'jwt-decode';
 
 
-export function Profile() {
+export function Profile({ setUsers }) {
   const [loading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const auth = useAuth(); 
@@ -12,12 +12,8 @@ export function Profile() {
   useEffect(() => {
     const lsCurrentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    if (!lsCurrentUser) {
-      navigate('/');
-    }
-
-    if (!auth.currentUser) 
-      auth.setCurrentUser(lsCurrentUser);
+    if (!lsCurrentUser)    navigate('/');
+    if (!auth.currentUser) auth.setCurrentUser(lsCurrentUser);
 
     setIsLoading(false);
   }, []);
@@ -26,8 +22,12 @@ export function Profile() {
     const conf = confirm('Are you sure?');
     if (!conf) return;
 
+    const usernameToRemove = auth.currentUser.username;
     const { id } = jwt_decode(auth.currentUser.accessToken);
     await auth.deleteUser(id);
+
+    setUsers(prev => prev.filter(u => u.username !== usernameToRemove));
+    navigate('/');
   };
 
   const handleLogout = async () => {
