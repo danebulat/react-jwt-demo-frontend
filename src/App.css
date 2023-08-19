@@ -46,25 +46,36 @@ body {
   margin-top: 30px; 
   display: flex;
   flex-direction: column;
-  row-gap: 14px;
+  row-gap: 10px;
 }
 .users-ul > li { 
+  display: flex;
+  column-gap: 10px;
+
   font-weight: 500;
   font-size: 14px;
-  padding: 10px 0; 
   list-style: none;
-  padding: 10px 20px;
+  padding: 12px 30px;
   border-radius: 10px;
-  text-align: center;
   background: rgb(255,255,255);
   background: linear-gradient(90deg, rgba(229,229,229,1) 0%, rgba(229,229,229,1) 5%, rgba(255,255,255,1) 48%, rgba(229,229,229,1) 95%, rgba(229,229,229,1) 100%);
 }
+.users-ul span { display: inline-block; }
+.username { 
+  flex: 1; 
+  font-weight: 600;
+  font-size: 13px;
+  color: #3a3a3a;
+}
+
 .sub-txt {
-  color: #9f9f9f;
+  color: #878787;
   font-size: 13px;
   font-weight: 400;
   text-transform: lowercase;
   margin-left: 18px;
+  display: inline-block;
+  justify-self: end;
 }
 .leftTitle {
   color: teal;
@@ -72,6 +83,11 @@ body {
   text-align: center;
   display: block;
   margin-top: 20px
+}
+.leftSubTitle {
+  text-align: center;
+  font-size: 13px;
+  color: #3a3a3a;
 }
 
 /* ---------------------------------------- */
@@ -89,7 +105,6 @@ body {
   align-items: center;
   max-width: 500px;
 }
-
 .box,
 .login {
   justify-self: center;
@@ -137,6 +152,10 @@ input:focus {
 .submitButton:hover {
   background-color: #7fb3b3;
 }
+.submitButton:disabled {
+  background-color: #7fb3b3;
+}
+.error { color: red; text-align: center; }
 
 /* ---------------------------------------- */
 /* Profile                                  */
@@ -195,5 +214,26 @@ input:focus {
   }
   .inner-grid {
     padding: 30px 10px;
+  }
+}
+
+@media (max-width: 950px) {
+  body {
+    min-width: 630px;
+  }
+  .outer-grid {
+    grid-template-rows: auto;
+  }
+  .inner-grid,
+  .profile-grid {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 30px;
+    justify-items: center;
+    align-items: start;
+    padding-top: 35px;
+    padding-bottom: 35px;
+  }
+  .home {
+    width: max-content;
   }
 }

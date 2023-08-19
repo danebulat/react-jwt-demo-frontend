@@ -9,6 +9,13 @@ function timestampToDate(timestamp) {
   return String(date);
 }
 
+function getSubString(string, numChars) {
+ return string.length <= numChars
+   ? string 
+   : `${string.substring(0, numChars)}...`;
+}
+
 export {
   timestampToDate,
+  getSubString,
 };

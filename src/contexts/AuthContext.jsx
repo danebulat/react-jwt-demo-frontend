@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
+import axios           from 'axios';
+import jwt_decode      from 'jwt-decode';
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
-import jwt_decode from 'jwt-decode';
+import { serverUri}    from '../config/server.js';
 
 // The context object
 const AuthContext = React.createContext();
@@ -14,9 +15,12 @@ export function useAuth() {
 // Application top-level component
 export function AuthProvider({ children }) {
 
-  const [currentUser, setCurrentUser] = useState(null);
-  const [error, setError] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [currentUser,      setCurrentUser]      = useState(null);
+  const [loginError,       setLoginError]       = useState(false);
+  const [loginErrorMsg,    setLoginErrorMsg]    = useState('');
+  const [registerError,    setRegisterError]    = useState(false);
+  const [registerErrorMsg, setRegisterErrorMsg] = useState('');
+
   const navigate = useNavigate();
 
   // Axios instance that requires the interceptor 
@@ -29,7 +33,7 @@ export function AuthProvider({ children }) {
 
   async function refreshToken() {
     try {
-      const res = await axios.post('http://localhost:5000/api/refresh', 
+      const res = await axios.post(`${serverUri}/api/refresh`,
         { token: currentUser.refreshToken });
 
       setCurrentUser({
@@ -72,38 +76,54 @@ export function AuthProvider({ children }) {
   /* Handlers                                           */
   /* -------------------------------------------------- */
 
-  async function register(username, password) {
+  async function register(username, password, setUsers) {
+    if (!username || !password) {
+      setRegisterError(true);
+      setRegisterErrorMsg('Provide a username and password');
+      return;
+    }
+
     try {
-      console.log(`${username} ${password}`);
-      const res = await axios.post('http://localhost:5000/api/register', {
+      const res = await axios.post(`${serverUri}/api/register`, {
         username, password
       });
 
       setCurrentUser({ ...res.data });
+      setRegisterError(false);
+
       localStorage.setItem('currentUser', JSON.stringify({ ...res.data }));
-      return { ...res.data };
+      setUsers(prev => [...prev, { ...res.data }]);
+      navigate('/profile');
     }
     catch (err) {
       console.log(err);
+      setRegisterError(true);
+      setRegisterErrorMsg(err.response.data.error);
     }
   }
 
   async function login(username, password) {
+    if (!username.trim() || !password.trim()) {
+      setLoginError(true);
+      setLoginErrorMsg('Provide a username and password');
+      return;
+    }
+
     try {
-      const res = await axios.post('http://localhost:5000/api/login', { 
+      const res = await axios.post(`${serverUri}/api/login`, { 
         username, password 
       });
 
       setCurrentUser({ ...res.data });
+      setLoginError(false);
 
-      if (res.data.username === username) {
-        localStorage.setItem('currentUser', JSON.stringify({ ...res.data }));
-        return true;
-      }
-      else return false;
+      localStorage.setItem('currentUser', JSON.stringify({ ...res.data }));
+      navigate('/profile');
     }
     catch (err) {
       console.log(err);
+      setLoginError(true);
+      setLoginErrorMsg(err.response.data.error);
     }
   }
 
@@ -111,7 +131,7 @@ export function AuthProvider({ children }) {
     const accessToken = currentUser.accessToken;
 
     await axiosJWT.post(
-      'http://localhost:5000/api/logout',
+      `${serverUri}/api/logout`,
       { token: currentUser.refreshToken },
       { headers: { authorization: "Bearer " + accessToken }},
     );
@@ -121,11 +141,8 @@ export function AuthProvider({ children }) {
   }
 
   async function deleteUser(id) {
-    setSuccess(false);
-    setError(false);
-
     try {
-      await axiosJWT.delete(`http://localhost:5000/api/users/${id}`, {
+      await axiosJWT.delete(`${serverUri}/api/users/${id}`, {
         headers: { authorization: "Bearer " + currentUser.accessToken }
       });
       
@@ -133,7 +150,7 @@ export function AuthProvider({ children }) {
       localStorage.removeItem('currentUser');
     }
     catch (err) {
-      setError(true);
+      console.log(err);
     }
   }
 
@@ -143,10 +160,12 @@ export function AuthProvider({ children }) {
     login,
     logout,
     deleteUser,
-    refreshToken,
-    error,
-    success,
     register,
+
+    loginError,
+    loginErrorMsg,
+    registerError,
+    registerErrorMsg,
   };
 
   // Provide context value
