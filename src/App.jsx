@@ -41,11 +41,35 @@ function App() {
             ))}
           </ul>
         </div>
-        <Routes>
-          <Route path="/" element={<Login setUsers={setUsers} />} />
-          <Route path="/profile" element={<Profile setUsers={setUsers} />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        
+        <div>
+          <div className="app-info">
+            <h2>Description</h2>
+            <p>Web app build with <strong> React</strong>, <strong> Node.js </strong> and 
+            <strong> MySQL </strong> demonstrating JWT authentication. Register a new user to
+            log in and out of your account. Delete your account by clicking the corresponding 
+            button after logging in.</p>
+            <h2>Source Code</h2>
+            <p className="code-links">
+              <span> 
+                <a href="https://github.com/danebulat/react-jwt-demo-frontend" target="_blank">
+                  Frontend
+                </a>
+              </span> &middot;
+              <span> 
+                <a href="https://github.com/danebulat/react-jwt-demo-backend" target="_blank">
+                  Backend
+                </a>
+              </span>
+            </p>
+          </div>
+
+          <Routes>
+            <Route path="/" element={<Login setUsers={setUsers} />} />
+            <Route path="/profile" element={<Profile setUsers={setUsers} />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
       </div>
     </div>
   )
