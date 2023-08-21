@@ -10,6 +10,9 @@ body {
 .container {
   font-family: "Quicksand", sans-serif;
 }
+.mt10 { 
+  margin-top: 10px; 
+}
 
 /* ---------------------------------------- */
 /* Layout                                   */
@@ -246,11 +249,81 @@ input:focus {
     padding: 30px 10px;
   }
 }
-
-@media (max-width: 950px) {
+@media (max-width: 530px) {
   body {
-    min-width: 630px;
+    padding: 0;
   }
+  .outer-grid {
+    margin-top: 0;
+  }
+  .page-right {
+    order: 1;
+  }
+  .page-left {
+    order: 2;
+    position: static;
+    border-right: none;
+    width: auto;
+  }
+  .app-info {
+    padding: 20px;
+    max-width: none;
+    margin: 20px;
+  }
+  .inner-grid {
+    grid-template-columns: minmax(0, 1fr);
+    column-gap: 0;
+    row-gap: 20px;
+    max-width: none;
+    padding: 0 20px 20px;
+  }
+  .profile-grid {
+    justify-content: center;
+    padding: 0 20px;
+  }
+  .home {
+    justify-self: stretch;
+    width: auto;
+  }
+}
+@media (min-width: 531px) and (max-width: 650px) {
+  body {
+    padding: 0;
+  }
+  .outer-grid {
+    margin-top: 0;
+  }
+  .page-right {
+    order: 1;
+  }
+  .page-left {
+    order: 2;
+    position: static;
+    border-right: none;
+    width: auto;
+  }
+  .app-info {
+    padding: 20px;
+    max-width: none;
+    margin: 20px;
+  }
+  .inner-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 20px;
+    max-width: none;
+    padding: 0 20px 20px;
+  }
+  .profile-grid {
+    justify-content: center;
+    padding: 0 20px;
+  }
+  .home {
+    justify-self: stretch;
+    width: auto;
+  }
+}
+
+@media (min-width: 651px) and (max-width: 950px) {
   .outer-grid {
     grid-template-rows: auto;
   }
@@ -263,7 +336,8 @@ input:focus {
     padding-bottom: 35px;
   }
   .home {
-    width: max-content;
+    width: auto;
+    margin: 0 20px;
   }
   .app-info {
     margin-left: 20px;
