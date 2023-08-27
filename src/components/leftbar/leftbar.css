@@ -39,3 +39,17 @@
   color: #fff;
 }
 
+@media (max-width: 740px) {
+  .leftbar {
+    flex: 1;
+    max-width: none;
+    border-bottom: 2px solid #000;
+    max-height: 600px;
+    overflow-y: auto;
+  }
+}
+@media (min-width: 741px) and (max-width: 1030px) {
+  .leftbar{
+    flex: 4;
+  }
+}

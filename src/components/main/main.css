@@ -7,3 +7,15 @@
 .mainWrapper {
   padding: 20px;
 }
+
+@media (max-width: 740px) {
+  .main {
+    flex: 1;
+    min-height: auto;
+  }
+}
+@media (min-width: 741px) and (max-width: 1030px) {
+  .main {
+    flex: 5;
+  }
+}

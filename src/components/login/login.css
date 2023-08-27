@@ -86,3 +86,44 @@
 }
 .error { color: lightpink; text-align: center; }
 
+@media (max-width: 560px) {
+  .login {
+    flex: 1;
+    row-gap: 20px;
+  }
+  .loginContainer {
+    grid-column: span 2;
+    margin: 0 auto;
+  }
+  .registerContainer {
+    grid-column: span 2;
+    margin: 0 auto;
+  }
+}
+@media (min-width: 561px) and (max-width: 740px) {
+  .login {
+    flex: 1;
+    row-gap: 20px;
+  }
+  .loginContainer {
+    grid-column: span 1;
+    margin: 0 auto;
+  }
+  .registerContainer {
+    grid-column: span 1;
+    margin: 0 auto;
+  }
+}
+@media (min-width: 741px) and (max-width: 1030px) {
+  .login {
+    row-gap: 20px;
+  }
+  .loginContainer {
+    grid-column: span 2;
+    margin: 0 auto;
+  }
+  .registerContainer {
+    grid-column: span 2;
+    margin: 0 auto;
+  }
+}

@@ -1,6 +1,7 @@
 body {
   box-sizing: border-box;
   font-family: 'Noto Sans', sans-serif;
+  background-color: #000;
 }
 * {
   margin: 0;
@@ -14,12 +15,9 @@ body {
 /* Responsiveness                           */
 /* ---------------------------------------- */
 
-@media all and (max-height: 400px) {
-}
-@media (max-width: 530px) {
-}
-@media (min-width: 531px) and (max-width: 650px) {
+@media (max-width: 740px) {
+  .jwtDemo{
+    flex-direction: column;
+  }
 }
 
-@media (min-width: 651px) and (max-width: 950px) {
-}

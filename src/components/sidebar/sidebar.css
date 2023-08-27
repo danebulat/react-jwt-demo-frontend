@@ -54,3 +54,16 @@
   text-transform: lowercase;
   color: #ccc;
 }
+
+@media (max-width: 740px) {
+  .sidebar {
+    flex: 1;
+    max-width: none;
+  }
+}
+@media (min-width: 741px) and (max-width: 1030px) {
+  .sidebar {
+    flex: 3;
+    min-width: 225px;
+  }
+}
