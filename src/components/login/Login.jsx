@@ -1,6 +1,7 @@
+import './login.css';
 import { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from 'contexts/AuthContext';
+import { useNavigate }         from 'react-router-dom';
+import { useAuth }             from '../../contexts/AuthContext';
 
 export function Login({ setUsers }) {
 
@@ -18,7 +19,6 @@ export function Login({ setUsers }) {
     loginErrorMsg,
     registerError, 
     registerErrorMsg } = useAuth();
-
 
   // navigate to profile if user saved in local storage
   useEffect(() => {
@@ -45,44 +45,48 @@ export function Login({ setUsers }) {
   };
 
   return (
-    <div className="inner-grid">
-      <div className="login">
-        <form onSubmit={handleSubmit}>
+    <div className="login">
+      <div className="loginContainer">
+        <form className="loginForm" onSubmit={handleSubmit}>
           <span className="formTitle">Login</span>
           {loginError && <span className="error">{loginErrorMsg}</span>}
           <input
+            className="formInput"
             type="text"
             placeholder="username"
             onChange={(e) => setUsername(e.target.value)}
           />
           <input
+            className="formInput"
             type="password"
             placeholder="password"
             onChange={(e) => setPassword(e.target.value)}
           />
           {loading
-            ? <button disabled type="submit" className="submitButton">Login</button>
-            : <button type="submit" className="submitButton">Login</button>}
+            ? <button disabled type="submit" className="loginSubmitButton">Login</button>
+            : <button type="submit" className="loginSubmitButton">Login</button>}
         </form>
       </div>
 
-      <div className="login">
-        <form onSubmit={handleRegister}>
+      <div className="registerContainer">
+        <form className="registerForm" onSubmit={handleRegister}>
           <span className="formTitle">Register</span>
           {registerError && <span className="error">{registerErrorMsg}</span>}
           <input
+            className="formInput"
             type="text"
             placeholder="username"
             onChange={(e) => setUsername(e.target.value)}
           />
           <input
+            className="formInput"
             type="password"
             placeholder="password"
             onChange={(e) => setPassword(e.target.value)}
           />
           {loading 
-            ? <button disabled type="submit" className="submitButton">Register</button>
-            : <button type="submit" className="submitButton">Register</button>}
+            ? <button disabled type="submit" className="registerSubmitButton">Register</button>
+            : <button type="submit" className="registerSubmitButton">Register</button>}
         </form>
       </div>
     </div>

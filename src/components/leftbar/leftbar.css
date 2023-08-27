@@ -1,0 +1,41 @@
+.leftbar {
+  flex: 3.5;
+  max-width: 350px;
+  background-color: #1c1e25;
+  border-right: 2px solid #000;
+  align-self: stretch;
+  color: #fff;
+}
+.leftbarWrapper {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 14px;
+}
+.descriptionText {
+  font-size: 14px;
+  line-height: 22px;
+  color: #cfcfcf;
+}
+.descriptionText strong {
+  color: #9c7bc5;
+}
+.leftbarTitle {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #777;
+}
+.codeLinksContainer {
+  display: flex;
+  column-gap: 8px;
+}
+.codeLink {
+  color: #cfcfcf;
+  text-decoration: underline;
+  font-size: 14px;
+}
+.codeLink:hover {
+  color: #fff;
+}
+

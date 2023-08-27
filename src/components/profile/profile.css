@@ -1,0 +1,53 @@
+.profile {
+  width: 100%;
+}
+.profileWrapper {
+  padding: 20px;
+  margin: 0 auto;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  text-align: center;
+
+  border-radius: 10px;
+  max-width: 400px;
+  height: 250px;
+  background-color: #5852d6;
+}
+.deleteButton {
+  padding: 14px 18px;
+  border: none;
+  border-radius: 10px;
+  background-color: #d95087;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.deleteButton:hover {
+  background-color: #cb487c;
+}
+.logoutButton {
+  width: 100px;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: teal;
+  color: white;
+  cursor: pointer;
+  background-color: #444181;
+}
+.logoutButton:hover {
+  background-color: #3d3a74;
+}
+.error {
+  font-size: 12px;
+  color: lightpink;
+}
+.success {
+  font-size: 12px;
+  color: green;
+}
+

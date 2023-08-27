@@ -1,0 +1,56 @@
+.sidebar {
+  flex: 2.5;
+  max-width: 350px;
+  background-color: #000;
+  color: #fff;
+  align-self: stretch;
+}
+.sidebarWrapper {
+  padding: 20px;
+}
+.sidebarTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  text-align: center;
+  color: #cfcfcf;
+}
+.sidebarSubtitle {
+  text-align: center;
+  font-size: 13px;
+  margin-bottom: 36px;
+  color: #cfcfcf;
+}
+.sidebarSubtitleLeft {
+  margin-right: 6px;
+}
+.sidebarSubtitleRight {
+  margin-left: 6px;
+}
+.sidebarUserList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+}
+.sidebarUserListItem {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  justify-content: space-between;
+  padding: 10px 12px;
+}
+.sidebarUserListItem:hover {
+  background-color: #000;
+}
+.sidebarUsername {
+  font-weight: 600;
+  font-size: 14px;
+  color: #cfcfcf;
+}
+.sidebarCreatedAt {
+  font-size: 12px;
+  font-weight: 400;
+  text-transform: lowercase;
+  color: #ccc;
+}

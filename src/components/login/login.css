@@ -1,0 +1,88 @@
+.login {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 30px;
+
+  margin: 0 auto;
+  align-items: center;
+  max-width: 500px;
+}
+.box,
+.registerContainer,
+.loginContainer {
+  justify-self: center;
+  max-width: 200px;
+  padding: 20px;
+  border-radius: 8px;
+}
+.loginContainer {
+  background-color: #5852d6;
+}
+.registerContainer {
+  background-color: #7f52d6;
+}
+.box {
+  max-width: 100%;
+}
+.loginForm,
+.registerForm {
+  display: flex;
+  flex-direction: column;
+  row-gap: 30px;
+  padding: 20px;
+  align-items: center;
+}
+.formTitle {
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  display: block;
+}
+.formInput {
+  height: 30px;
+  border: 1px solid #fff;
+  background-color: transparent;
+  text-align: center;
+  border-radius: 6px;
+  color: #fff;
+}
+.formInput::placeholder {
+  color: #ccc;
+}
+.formInput:focus {
+  outline: none;
+}
+.loginSubmitButton {
+  width: 100px;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: teal;
+  color: white;
+  cursor: pointer;
+  background-color: #444181;
+}
+.loginSubmitButton:hover {
+  background-color: #3d3a74;
+}
+.loginSubmitButton:disabled {
+  background-color: #3d3a74;
+}
+.registerSubmitButton {
+  width: 100px;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: teal;
+  color: white;
+  cursor: pointer;
+  background-color: #4c3464;
+}
+.registerSubmitButton:hover {
+  background-color: #462f5c;
+}
+.registerSubmitButton:disabled {
+  background-color: #462f5c;
+}
+.error { color: lightpink; text-align: center; }
+

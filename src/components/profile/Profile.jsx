@@ -1,6 +1,7 @@
+import './profile.css';
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from '../../contexts/AuthContext';
 import jwt_decode from 'jwt-decode';
 
 
@@ -36,11 +37,12 @@ export function Profile({ setUsers }) {
   };
 
   if (loading) {
-    return <div className="inner-grid">Loading...</div>
+    return <div>Loading...</div>
   } else {
     return (
-      <div className="profile-grid">
-        <div className="home">
+      <div className="profile">
+        <div className="profileWrapper">
+
           <span>
             Welcome to the <b>{auth.currentUser.isAdmin ? "admin" : "user"}</b> dashboard{" "}
             <b>{auth.currentUser.username}</b>.
@@ -48,7 +50,7 @@ export function Profile({ setUsers }) {
           <button className="deleteButton" onClick={() => handleDelete()}>
             Delete Account 
           </button>
-          <button className="submitButton" onClick={() => handleLogout()}>
+          <button className="logoutButton" onClick={() => handleLogout()}>
             Logout
           </button>
           {auth.error && (

@@ -1,0 +1,9 @@
+.main {
+  flex: 6;
+  background-color: #20232b;
+  color: #fff;
+  min-height: calc(100vh - 52px);
+}
+.mainWrapper {
+  padding: 20px;
+}
