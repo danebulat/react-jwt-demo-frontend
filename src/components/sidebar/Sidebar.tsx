@@ -1,16 +1,21 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useEffect } from 'react';
+import axios         from 'axios';
 import { serverUri } from '../../config/server';
-import { format } from 'timeago.js';
+import { format }    from 'timeago.js';
+import { SetUsersType, ListUser } from '../../types/types';
 import './sidebar.css';
 
-export default function Sidebar({ setUsers, users }) {
+type SidebarProps = {
+  setUsers: SetUsersType;
+  users: ListUser[];
+}
+
+export default function Sidebar({ setUsers, users }: SidebarProps) {
 
   useEffect(() => {
     const getAllUsers = async () => {
       try {
         const result = await axios.get(`${serverUri}/api/users`);
-        console.log(result);
         setUsers(result.data);
       }
       catch (err) {

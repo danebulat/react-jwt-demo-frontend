@@ -1,31 +1,36 @@
-import React, { useContext, useState, useEffect } from "react";
-import axios           from 'axios';
-import jwt_decode      from 'jwt-decode';
-import { useNavigate } from "react-router-dom";
-import { serverUri}    from '../config/server.js';
+import React, { useContext, useState } from "react";
+import axios, {AxiosResponse, AxiosInstance, InternalAxiosRequestConfig} from 'axios';
+import jwt_decode             from 'jwt-decode';
+import { useNavigate }        from "react-router-dom";
+import { serverUri}           from '../config/server.js';
+import { AuthState, DecodedToken, SetUsersType, User } from "../types/types.js";
 
 // The context object
-const AuthContext = React.createContext();
+const AuthContext = React.createContext<AuthState | null>(null);
 
-// Return context value
+// The '| null' will be removed via the check in the hook
 export function useAuth() {
-  return useContext(AuthContext);
+  const object = useContext(AuthContext);
+  if (!object) {
+    throw new Error("AuthState must be used within a Provider");
+  }
+  return object;
 }
 
 // Application top-level component
-export function AuthProvider({ children }) {
+export function AuthProvider({ children }: {children: React.ReactNode}) {
 
-  const [currentUser,      setCurrentUser]      = useState(null);
-  const [loginError,       setLoginError]       = useState(false);
-  const [loginErrorMsg,    setLoginErrorMsg]    = useState('');
-  const [registerError,    setRegisterError]    = useState(false);
-  const [registerErrorMsg, setRegisterErrorMsg] = useState('');
+  const [currentUser,      setCurrentUser]      = useState<User | null>(null);
+  const [loginError,       setLoginError]       = useState<boolean>(false);
+  const [loginErrorMsg,    setLoginErrorMsg]    = useState<string>('');
+  const [registerError,    setRegisterError]    = useState<boolean>(false);
+  const [registerErrorMsg, setRegisterErrorMsg] = useState<string>('');
 
   const navigate = useNavigate();
 
   // Axios instance that requires the interceptor 
   // before every request
-  const axiosJWT = axios.create();
+  const axiosJWT: AxiosInstance = axios.create();
 
   /* -------------------------------------------------- */
   /* Refresh token                                      */
@@ -34,13 +39,15 @@ export function AuthProvider({ children }) {
   async function refreshToken() {
     try {
       const res = await axios.post(`${serverUri}/api/refresh`,
-        { token: currentUser.refreshToken });
+        { token: currentUser?.refreshToken });
 
-      setCurrentUser({
-        ...currentUser,
-        accessToken: res.data.accessToken,
-        refreshToken: res.data.refreshToken,
-      });
+      if (currentUser) {
+        setCurrentUser({
+          ...currentUser,
+          accessToken: res.data.accessToken,
+          refreshToken: res.data.refreshToken,
+        });
+      }
     }
     catch (err) {
       console.log(err);
@@ -54,9 +61,13 @@ export function AuthProvider({ children }) {
 
   // check refresh token before every request
   axiosJWT.interceptors.request.use(
-    async (config) => {
+    async (config: InternalAxiosRequestConfig): Promise<InternalAxiosRequestConfig> => {
       let currentDate = new Date();
-      const decodedToken = jwt_decode(currentUser.accessToken);
+
+      if (currentUser === null)
+        return config;
+
+      const decodedToken = jwt_decode<DecodedToken>(currentUser.accessToken);
   
       // generate new tokens if access token expired
       if (decodedToken.exp * 1000 < currentDate.getTime()) {
@@ -76,7 +87,8 @@ export function AuthProvider({ children }) {
   /* Handlers                                           */
   /* -------------------------------------------------- */
 
-  async function register(username, password, setUsers) {
+  async function register(username: string, password: string, 
+                          setUsers: SetUsersType) {
     if (!username || !password) {
       setRegisterError(true);
       setRegisterErrorMsg('Provide a username and password');
@@ -84,7 +96,7 @@ export function AuthProvider({ children }) {
     }
 
     try {
-      const res = await axios.post(`${serverUri}/api/register`, {
+      const res: AxiosResponse = await axios.post(`${serverUri}/api/register`, {
         username, password
       });
 
@@ -95,14 +107,14 @@ export function AuthProvider({ children }) {
       setUsers(prev => [...prev, { ...res.data }]);
       navigate('/profile');
     }
-    catch (err) {
+    catch (err: any) {
       console.log(err);
       setRegisterError(true);
       setRegisterErrorMsg(err.response.data.error);
     }
   }
 
-  async function login(username, password) {
+  async function login(username: string, password: string) {
     if (!username.trim() || !password.trim()) {
       setLoginError(true);
       setLoginErrorMsg('Provide a username and password');
@@ -120,7 +132,7 @@ export function AuthProvider({ children }) {
       localStorage.setItem('currentUser', JSON.stringify({ ...res.data }));
       navigate('/profile');
     }
-    catch (err) {
+    catch (err: any) {
       console.log(err);
       setLoginError(true);
       setLoginErrorMsg(err.response.data.error);
@@ -128,11 +140,11 @@ export function AuthProvider({ children }) {
   }
 
   async function logout() {
-    const accessToken = currentUser.accessToken;
+    const accessToken = currentUser?.accessToken;
 
     await axiosJWT.post(
       `${serverUri}/api/logout`,
-      { token: currentUser.refreshToken },
+      { token: currentUser?.refreshToken },
       { headers: { authorization: "Bearer " + accessToken }},
     );
 
@@ -140,10 +152,10 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('currentUser');
   }
 
-  async function deleteUser(id) {
+  async function deleteUser(id: number) {
     try {
       await axiosJWT.delete(`${serverUri}/api/users/${id}`, {
-        headers: { authorization: "Bearer " + currentUser.accessToken }
+        headers: { authorization: "Bearer " + currentUser?.accessToken }
       });
       
       setCurrentUser(null);
@@ -154,7 +166,7 @@ export function AuthProvider({ children }) {
     }
   }
 
-  const value = {
+  const value: AuthState = {
     currentUser,
     setCurrentUser,
     login,

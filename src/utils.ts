@@ -1,4 +1,4 @@
-function timestampToDate(timestamp) {
+function timestampToDate(timestamp: string) {
   if (!timestamp) return '';
 
   const dateTime = timestamp.replace('T', ' ')
@@ -9,7 +9,7 @@ function timestampToDate(timestamp) {
   return String(date);
 }
 
-function getSubString(string, numChars) {
+function getSubString(string: string, numChars: number) {
  return string.length <= numChars
    ? string 
    : `${string.substring(0, numChars)}...`;

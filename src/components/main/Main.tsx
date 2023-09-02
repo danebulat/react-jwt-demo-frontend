@@ -2,8 +2,13 @@ import './main.css';
 import { Routes, Route } from 'react-router-dom';
 import { Profile }       from '../profile/Profile';
 import { Login }         from '../login/Login';
+import {SetUsersType} from '../../types/types';
 
-export default function Main({ setUsers }) {
+type MainProps = {
+  setUsers: SetUsersType;
+}
+
+export default function Main({ setUsers }: MainProps) {
   return (
     <div className="main">
       <div className="mainWrapper">

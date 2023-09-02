@@ -3,18 +3,24 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../../contexts/AuthContext';
 import jwt_decode from 'jwt-decode';
+import {DecodedToken, SetUsersType} from '../../types/types';
 
+type ProfileProps = {
+  setUsers: SetUsersType;
+}
 
-export function Profile({ setUsers }) {
+export function Profile({ setUsers }: ProfileProps) {
+
   const [loading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-  const auth = useAuth(); 
+  const { currentUser, setCurrentUser, deleteUser, logout } = useAuth(); 
 
   useEffect(() => {
-    const lsCurrentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const getUser = localStorage.getItem('currentUser');
 
-    if (!lsCurrentUser)    navigate('/');
-    if (!auth.currentUser) auth.setCurrentUser(lsCurrentUser);
+    if (!getUser) navigate('/');
+    if (!currentUser && getUser) 
+      setCurrentUser(JSON.parse(getUser));
 
     setIsLoading(false);
   }, []);
@@ -22,17 +28,18 @@ export function Profile({ setUsers }) {
   const handleDelete = async () => {
     const conf = confirm('Are you sure?');
     if (!conf) return;
+    if (!currentUser) return;
 
-    const usernameToRemove = auth.currentUser.username;
-    const { id } = jwt_decode(auth.currentUser.accessToken);
-    await auth.deleteUser(id);
+    const usernameToRemove = currentUser.username;
+    const { id } = jwt_decode<DecodedToken>(currentUser.accessToken);
+    await deleteUser(id);
 
     setUsers(prev => prev.filter(u => u.username !== usernameToRemove));
     navigate('/');
   };
 
   const handleLogout = async () => {
-    await auth.logout();
+    await logout();
     navigate('/');
   };
 
@@ -44,8 +51,8 @@ export function Profile({ setUsers }) {
         <div className="profileWrapper">
 
           <span>
-            Welcome to the <b>{auth.currentUser.isAdmin ? "admin" : "user"}</b> dashboard{" "}
-            <b>{auth.currentUser.username}</b>.
+            Welcome to the <b>{currentUser?.isAdmin ? "admin" : "user"}</b> dashboard{" "}
+            <b>{currentUser?.username}</b>.
           </span>
           <button className="deleteButton" onClick={() => handleDelete()}>
             Delete Account 
@@ -53,16 +60,7 @@ export function Profile({ setUsers }) {
           <button className="logoutButton" onClick={() => handleLogout()}>
             Logout
           </button>
-          {auth.error && (
-            <span className="error">
-              You are not allowed to delete this user!
-            </span>
-          )}
-          {auth.success && (
-            <span className="success">
-              User has been deleted successfully...
-            </span>
-          )}
+
         </div>
       </div>
     );

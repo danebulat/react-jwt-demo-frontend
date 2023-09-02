@@ -2,42 +2,46 @@ import './login.css';
 import { useState, useEffect } from "react";
 import { useNavigate }         from 'react-router-dom';
 import { useAuth }             from '../../contexts/AuthContext';
+import {SetUsersType} from '../../types/types';
 
-export function Login({ setUsers }) {
+type LoginProps = {
+  setUsers: SetUsersType;
+};
+
+export function Login({ setUsers }: LoginProps) {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading,  setLoading]  = useState(false);
 
   const navigate = useNavigate();
-
   const { 
+    setCurrentUser, 
     login, 
     register, 
-    setCurrentUser, 
-    loginError, 
-    loginErrorMsg,
+    loginError,
+    loginErrorMsg, 
     registerError, 
     registerErrorMsg } = useAuth();
 
   // navigate to profile if user saved in local storage
   useEffect(() => {
-    const lsCurrentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const getUser = localStorage.getItem('currentUser');
 
-    if (lsCurrentUser) {
-      setCurrentUser(lsCurrentUser);
+    if (getUser) {
+      setCurrentUser(JSON.parse(getUser));
       navigate('/profile');
     }
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     await login(username.trim(), password.trim());
     setLoading(false);
   };
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e: React.MouseEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     await register(username.trim(), password.trim(), setUsers); 
